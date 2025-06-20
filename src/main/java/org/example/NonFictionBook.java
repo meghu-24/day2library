@@ -1,9 +1,9 @@
 package org.example;
 
-public class NonFictionBook extends Books {
-    private String subject;
+public class NonFictionBook extends Book {
+    private final String subject;
 
-    public NonFictionBook(String id, String title, String author, String subject) {
+    public NonFictionBook(int id, String title, String author, String subject) {
         super(id, title, author);
         this.subject = subject;
     }

@@ -8,18 +8,22 @@ import org.bson.Document;
 
 public class Mongo {
     private final MongoCollection<Document> collection;
+    private final MongoClient client;
 
     public Mongo() {
-        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
-        MongoDatabase database = mongoClient.getDatabase("testdb");
-        this.collection = database.getCollection("Books");
+        // Connect to MongoDB running locally
+        client = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase db = client.getDatabase("newlibrary");
+        collection = db.getCollection("Book");
     }
 
-    public void insertBook(Books book) {
+    public void insertBook(Book book) {
+        // Create a document with basic book info
         Document doc = new Document("id", book.getId())
                 .append("title", book.getTitle())
                 .append("author", book.getAuthor());
 
+        // Add extra info if book is Fiction or NonFiction
         if (book instanceof FictionBook) {
             doc.append("type", "Fiction")
                     .append("genre", ((FictionBook) book).getGenre());
@@ -28,14 +32,19 @@ public class Mongo {
                     .append("subject", ((NonFictionBook) book).getSubject());
         }
 
+        // Insert the document into MongoDB
         collection.insertOne(doc);
-        System.out.println("Book inserted successfully!");
+        System.out.println("Inserted book: " + book.getTitle());
     }
 
-    public void displayAllBooks() {
-        System.out.println("Books in the Library:");
+    public void showAllBooks() {
+        System.out.println("Books in database:");
         for (Document doc : collection.find()) {
             System.out.println(doc.toJson());
         }
+    }
+
+    public void close() {
+        client.close();
     }
 }

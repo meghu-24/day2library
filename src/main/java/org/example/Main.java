@@ -2,15 +2,16 @@ package org.example;
 
 public class Main {
     public static void main(String[] args) {
-        Mongo dbm = new Mongo();
+        Mongo mongo = new Mongo();
 
-        FictionBook fb = new FictionBook("1", "Harry Potter", "J.K. Rowling", "Fantasy");
-        NonFictionBook nfb = new NonFictionBook("2", "Java Basics", "James Gosling", "Programming");
+        FictionBook fictionBook = new FictionBook(1, "Animal form", "The white tiger", "Fantasy");
+        NonFictionBook nonFictionBook = new NonFictionBook(2, "N-CERT", "The diary of young gil", "The art of war");
 
-        dbm.insertBook(fb);
-        dbm.insertBook(nfb);
+        mongo.insertBook(fictionBook);
+        mongo.insertBook(nonFictionBook);
 
-        System.out.println("All Books in Library:");
-        dbm.displayAllBooks();
+        mongo.showAllBooks();
+
+        mongo.close();
     }
 }
